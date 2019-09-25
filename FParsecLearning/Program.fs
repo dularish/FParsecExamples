@@ -28,6 +28,7 @@ let main argv =
     test pfloat "1.56E 3"
     test pfloat "1.a56E3"
     test pArray "[ 1;2.5;3;4]"
+    test (anyOf ['a'..'z']) "1"
     test (pArray <|> pNumericTerm) "1"
     
     printfn "ABD with no attempts:"
@@ -41,6 +42,16 @@ let main argv =
     printfn "ABE with backtracking andThen"
     //Notice how the error is pointing to D now
     test (((pchar 'A' .>>. pchar 'B' .>>.? pchar 'C')) <|> ((pchar 'A' .>>. pchar 'B' .>>. pchar 'D'))) "ABE"
+
+    //Understanding backtracking
+    let bInBrackets = pstring "[" >>. pstring "b" .>> pstring "]"
+    let ac = pstring "a" .>>. pstring "c"
+    let desiredParser = (pstring "a" .>>.? bInBrackets) <|> (ac)
+    test desiredParser "a[B]"
+    test desiredParser "a[b]"
+    test desiredParser "ac"
+    test desiredParser "ab"
+
 
     System.Console.ReadKey() |> ignore
     0 // return an integer exit code

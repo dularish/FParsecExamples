@@ -5,8 +5,8 @@
 
 let test p str =
     match run p str with
-    | Success(result, remaining, opt3) -> printfn "Success : %A ; %A ; %A" result remaining opt3
-    | Failure(errorMsg, _ , _) -> printfn "Failure : %A" errorMsg
+    | Success(result, userState, opt3) -> printfn "Success : %A ; %A ; %A" result userState opt3
+    | Failure(errorMsg, parserError ,userState) -> printfn "Failure : %A" errorMsg
 
 type ExpressionTerm =
     | Array of float list
